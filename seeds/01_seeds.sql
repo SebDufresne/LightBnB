@@ -34,7 +34,8 @@ VALUES
 ('2023-05-27','2023-05-28',6,7),
 ('2023-04-23','2023-05-02',5,8);
 
-INSERT INTO property_reviews (guest_id, property_id, rating, message)
+INSERT INTO property_reviews 
+(guest_id, property_id, rating, message)
 VALUES
 (2,7,3,'message'),
 (1,8,4,'message'),
