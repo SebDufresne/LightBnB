@@ -6,7 +6,7 @@ CREATE TABLE properties (
   thumbnail_photo_url TEXT,
   cover_photo_url TEXT,
   street TEXT,
-  parkings_spaces INTEGER,
+  parking_spaces INTEGER,
   number_of_bathrooms INTEGER,
   number_of_bedrooms INTEGER,
   country TEXT,
