@@ -1,26 +1,25 @@
-const properties = require('./json/properties.json');
-const users = require('./json/users.json');
-const { Client } = require('pg');
-require('dotenv').config();
+// const { Client } = require('pg');
+// require('dotenv').config();
+const { query } = require('./db/index.js');
 
-// Create the connection settings for the db
-const connectionSettings = {
-  host: process.env.PGHOST,
-  user: process.env.PGUSER,
-  database: process.env.PGDATABASE,
-  password: process.env.PGPASSWORD,
-  port: process.env.PGPORT,
-};
+// // Create the connection settings for the db
+// const connectionSettings = {
+//   host: process.env.PGHOST,
+//   user: process.env.PGUSER,
+//   database: process.env.PGDATABASE,
+//   password: process.env.PGPASSWORD,
+//   port: process.env.PGPORT,
+// };
 
-const pgClient = new Client(connectionSettings);
+// const pgClient = new Client(connectionSettings);
 
-// Connect to the database
-pgClient
-  .connect()
-  .then(() => {
-    console.log(`Connected to ${pgClient.database} database`);
-  })
-  .catch(err => console.log(err));
+// // Connect to the database
+// pgClient
+//   .connect()
+//   .then(() => {
+//     console.log(`Connected to ${pgClient.database} database`);
+//   })
+//   .catch(err => console.log(err));
 
 /// Users
 
@@ -35,8 +34,8 @@ const getUserWithEmail = function(email) {
   FROM users
   WHERE email = $1;
   `;
-
-  return pgClient.query(getUserByEmailQuery, [email])
+  console.log('Inside getUserWithEmail');
+  return query(getUserByEmailQuery, [email])
     .then(res => res.rows[0]);
 };
 
@@ -48,13 +47,12 @@ exports.getUserWithEmail = getUserWithEmail;
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithId = function(id) {
-  const getUserByEmailQuery = `
-  SELECT *
-  FROM users
-  WHERE id = $1;
-  `;
+  const getUserByEmailQuery = `SELECT * FROM users WHERE id = $1;`;
 
-  return pgClient.query(getUserByEmailQuery, [id])
+  const params = [];
+  params.push(id);
+
+  query(getUserByEmailQuery, params)
     .then(res => res.rows[0]);
 };
 exports.getUserWithId = getUserWithId;
@@ -74,7 +72,7 @@ const addUser =  function(user) {
 
   const idInfo = [user.name,user.email,user.password];
 
-  return pgClient.query(insertUserQuery, idInfo)
+  return query(insertUserQuery, idInfo)
     .then(res => res.rows);
 };
 exports.addUser = addUser;
@@ -102,7 +100,7 @@ const getAllReservations = function(guest_id, limit = 10) {
 
   const reqParams = [guest_id, limit];
 
-  return pgClient.query(getAllReservationsQuery, reqParams)
+  return query(getAllReservationsQuery, reqParams)
     .then(res => res.rows);
 };
 exports.getAllReservations = getAllReservations;
@@ -126,7 +124,7 @@ const getAllProperties = function(options, limit = 10) {
   JOIN property_reviews ON properties.id = property_id
   `;
 
-  if (options) {
+  if (options.city || options.owner_id || options.minimum_price_per_night || options.maximum_price_per_night) {
     queryString += ` WHERE `;
     const keysLits = [];
     for (const keys in options) {
@@ -177,7 +175,7 @@ const getAllProperties = function(options, limit = 10) {
   LIMIT $${queryParams.length};
   `;
 
-  return pgClient.query(queryString, queryParams)
+  return query(queryString, queryParams)
     .then(res => res.rows);
 };
 exports.getAllProperties = getAllProperties;
@@ -224,7 +222,7 @@ const addProperty = function(property) {
     property.number_of_bathrooms,
     property.number_of_bedrooms];
 
-  return pgClient.query(insertUserQuery, idInfo)
+  return query(insertUserQuery, idInfo)
     .then(res => res.rows);
 };
 exports.addProperty = addProperty;
