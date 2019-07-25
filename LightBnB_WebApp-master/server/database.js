@@ -87,7 +87,23 @@ exports.addUser = addUser;
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function(guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+  const getAllReservationsQuery = `
+  SELECT properties.*, reservations.*, ROUND(AVG(rating),2) as average_rating
+  FROM properties
+  JOIN reservations ON reservations.property_id = properties.id
+  JOIN users ON guest_id = users.id
+  JOIN property_reviews ON property_reviews.property_id = properties.id
+  WHERE users.id = $1
+  AND end_date < now()::date
+  GROUP BY properties.id, reservations.id
+  ORDER BY start_date
+  LIMIT $2;
+  `;
+
+  const reqParams = [guest_id, limit];
+
+  return pgClient.query(getAllReservationsQuery, reqParams)
+    .then(res => res.rows);
 };
 exports.getAllReservations = getAllReservations;
 
