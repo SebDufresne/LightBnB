@@ -23,13 +23,10 @@ pgClient
 module.exports = {
   query: (queryStr, params) => {
     const start = Date.now();
-    console.log(`queryStr ${queryStr}`);
-    console.log(`params ${params}`);
     return pgClient.query(queryStr, params)
       .then(res => {
         const duration = Date.now() - start;
         console.log('executed query', { queryStr, duration, rows: res.rowCount });
-        console.log(`res: ${res.rows}`);
         return res;
       })
       .catch(err => console.log(err));

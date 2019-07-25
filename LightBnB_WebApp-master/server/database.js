@@ -52,7 +52,7 @@ const getUserWithId = function(id) {
   const params = [];
   params.push(id);
 
-  query(getUserByEmailQuery, params)
+  return query(getUserByEmailQuery, params)
     .then(res => res.rows[0]);
 };
 exports.getUserWithId = getUserWithId;
