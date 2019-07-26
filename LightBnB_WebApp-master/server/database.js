@@ -164,7 +164,7 @@ exports.getAllProperties = getAllProperties;
  */
 const addProperty = function(property) {
 
-  const insertUserQuery = `
+  const addPropertyQuery = `
   INSERT INTO properties
   (owner_id,
   title,
@@ -199,7 +199,34 @@ const addProperty = function(property) {
     property.number_of_bathrooms,
     property.number_of_bedrooms];
 
-  return query(insertUserQuery, idInfo)
+  return query(addPropertyQuery, idInfo)
     .then(res => res.rows);
 };
 exports.addProperty = addProperty;
+
+/**
+ * Add a reservation to the database
+ * @param {{}} reservation An object containing all of the reservation details.
+ * @return {Promise<{}>} A promise to the reservation.
+ */
+const addReservation = function(reservation) {
+
+  const addReservationQuery = `
+  INSERT INTO reservations
+  (start_date,
+  end_date,
+  property_id,
+  guest_id)
+  VALUES ($1, $2, $3, $4)
+  RETURNING *;
+  `;
+
+  const idInfo = [reservation.start_date,
+    reservation.end_date,
+    reservation.property_id,
+    reservation.guest_id];
+
+  return query(addReservationQuery, idInfo)
+    .then(res => res.rows);
+};
+exports.addReservation = addReservation;
