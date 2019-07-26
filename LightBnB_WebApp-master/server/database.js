@@ -1,27 +1,4 @@
-// const { Client } = require('pg');
-// require('dotenv').config();
 const { query } = require('./db/index.js');
-
-// // Create the connection settings for the db
-// const connectionSettings = {
-//   host: process.env.PGHOST,
-//   user: process.env.PGUSER,
-//   database: process.env.PGDATABASE,
-//   password: process.env.PGPASSWORD,
-//   port: process.env.PGPORT,
-// };
-
-// const pgClient = new Client(connectionSettings);
-
-// // Connect to the database
-// pgClient
-//   .connect()
-//   .then(() => {
-//     console.log(`Connected to ${pgClient.database} database`);
-//   })
-//   .catch(err => console.log(err));
-
-/// Users
 
 /**
  * Get a single user from the database given their email.
