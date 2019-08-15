@@ -1,7 +1,5 @@
 $(() => {
 
-  
-
   const $newPropertyForm = $(`
   <form action="/api/properties" method="post" id="new-property-form" class="new-property-form">
       <div class="new-property-form__field-wrapper">
@@ -107,13 +105,13 @@ $(() => {
 
     const data = $(this).serialize();
     submitProperty(data)
-    .then(() => {
-      views_manager.show('listings');
-    })
-    .catch((error) => {
-      console.error(error);
-      views_manager.show('listings');
-    })
+      .then(() => {
+        views_manager.show('listings');
+      })
+      .catch((error) => {
+        console.error(error);
+        views_manager.show('listings');
+      })
   });
 
   $('body').on('click', '#property-form__cancel', function() {

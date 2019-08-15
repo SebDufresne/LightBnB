@@ -60,7 +60,7 @@ $(() => {
       .then(function(json) {
         propertyListings.addProperties(json.properties);
         views_manager.show('listings');
-    });
+      });
   });
 
   $("header").on("click", '.home', function() {
@@ -69,7 +69,7 @@ $(() => {
       .then(function(json) {
         propertyListings.addProperties(json.properties);
         views_manager.show('listings');
-    });
+      });
   });
 
   $('header').on('click', '.search_button', function() {

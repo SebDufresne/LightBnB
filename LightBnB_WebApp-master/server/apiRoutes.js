@@ -39,7 +39,8 @@ module.exports = function(router, database) {
     const userId = req.session.userId;
     database.addReservation({...req.body, guest_id: userId})
       .then(reservation => {
-        res.send(reservation);
+        console.log(reservation);
+        // res.send(reservation); // HAS ALL THE INFORMATIONS ABOUT THE NEW RESERVATION
       })
       .catch(e => {
         console.error(e);
